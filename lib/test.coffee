@@ -21,8 +21,6 @@ class TestFactory
       console.error 'Found JSON ref schemas: ' + files
       console.error ''
 
-      tv4.banUnknown = true
-
       for file in files
         tv4.addSchema(JSON.parse(fs.readFileSync(file, 'utf8')))
 
@@ -108,8 +106,10 @@ class Test
         Error
       """
 
+      banUnknownProperties = if @request.dontBanUnknownProperties then false else true
+
       json = validateJson()
-      result = tv4.validateResult json, schema, true, true
+      result = tv4.validateResult json, schema, false, banUnknownProperties
       assert.lengthOf result.missing, 0, """
         Missing/unresolved JSON schema $refs (#{result.missing?.join(', ')}) in schema:
         #{JSON.stringify(schema, null, 4)}
