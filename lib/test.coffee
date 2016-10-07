@@ -66,6 +66,8 @@ class Test
     options['url'] = @url()
     if typeof @request.body is 'string'
       options['body'] = @request.body
+    else if @request.json == false
+      options['body'] = @request.body
     else
       options['body'] = JSON.stringify @request.body
     options['qs'] = @request.query
